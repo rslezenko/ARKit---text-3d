@@ -14,21 +14,40 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    var myString = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the view's delegate
+        
+       
+        
         sceneView.delegate = self
         
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        let text = SCNText(string: myString, extrusionDepth: 1)
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.green
+        text.materials = [material]
         
-        // Set the scene to the view
-        sceneView.scene = scene
+        let node = SCNNode()
+        node.position = SCNVector3(x:-0.2,y:-0.1,z:-0.1)
+        node.scale = SCNVector3(x:0.01,y:0.01,z:0.01)
+        node.geometry = text
+        
+        sceneView.scene.rootNode.addChildNode(node)
+        sceneView.autoenablesDefaultLighting = true
+        
     }
+ 
+             
+    @IBAction func back(_ sender: Any) {
+        sceneView.session.pause()
+        self.performSegue(withIdentifier: "back", sender: self)
+    }
+    
+     
+   
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
